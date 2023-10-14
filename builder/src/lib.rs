@@ -13,12 +13,6 @@ pub fn derive(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
 
     eprintln!("INPUT: {:#?}", input);
 
-    expand(input)
-        .unwrap_or_else(Error::into_compile_error)
-        .into()
-}
-
-fn expand(input: DeriveInput) -> Result<TokenStream> {
     let name = input.ident;
 
     let builder_name = format_ident!("{}Builder", name);
@@ -55,7 +49,7 @@ fn expand(input: DeriveInput) -> Result<TokenStream> {
         }
     };
 
-    Ok(expanded)
+    proc_macro::TokenStream::from(expanded)
 }
 
 fn builder_fields(data: &Data) -> TokenStream {
